@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Basic HTML5 Template</title>
+  <meta name="description" content="A simple HTML5 Template for new projects.">
+  <meta name="author" content="VA">
+
+  <meta property="og:title" content="A Basic HTML5 Template">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="A simple HTML5 Template for new projects.">
+  <meta property="og:image" content="image.png">
+  <link rel="stylesheet" href="asset/css/styles.css">
+  <script src="js/defer-script.js"></script>
+
+</head>
+
+<body>
+	<div class="va-container">
+		<div class="va-card">
+			<div class="va-search-box">
+				<h1 class="va-search-box__header">GO OG LE</h1>
+				<form action="" onsubmit="findByKeyword();return false" id="searchForm">
+					  <input class="va-txt-center" type="text" id="textIn" name="textIn" placeholder="Enter keyword of book"><br><br>
+					  <button class="va-button va-button__primary" id="searchBooks" type="button">
+						<img src="asset/images/truck.svg" width="50px" height="24px"> 
+					  </button>
+				</form>
+			</div>
+			<div>
+				<ul id="result-data" class="result-box"></ul>
+			</div>
+		</div>
+		<div  style="margin-top:1rem;display: flex;flex-wrap: wrap;gap: 2rem;">
+			<div class="va-card">
+				<a href="users.html">users</a>
+				<a href="streaming.html">streaming</a>
+			</div>
+			<div class="va-card">
+				<button class="va-button va-button__primary" id="generateBookData" type="button">
+					Generate Book Data		
+				</button>
+				<button class="va-button va-button__primary" id="generateCateData" type="button">
+					Generate Category Data		
+				</button>
+				<button class="va-button va-button__primary" id="fireBtn" type="button">
+					
+					<a href="book.html">Create Form</a>
+				</button>
+			</div>
+		</div>
+		
+	</div>
+	<!--<h1 id="header-title" class="header-title">Some text here</h1>-->
+	<!-- your content here... -->
+	<!--<script type="module" src="js/module.js"></script>-->
+	<script src="js/common.js"></script>
+	<script src="js/book.js"></script>
+	<script src="js/scripts.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/vanilla.js"></script>
+	<script src="js/category.js"></script>
+</body>
+</html>

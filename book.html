@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>A Basic HTML5 Template</title>
+  <meta name="description" content="A simple HTML5 Template for new projects.">
+  <meta name="author" content="VA">
+
+  <meta property="og:title" content="A Basic HTML5 Template">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="A simple HTML5 Template for new projects.">
+  <meta property="og:image" content="image.png">
+  <link rel="stylesheet" href="asset/css/styles.css">
+  <script src="js/defer-script.js"></script>
+
+</head>
+
+<body>
+	<div class="va-container">
+		<div class="va-card">
+			<div class="form-style-5">
+				<form  id ="bookFrom" name="bookform" action="" method="POST">
+					<fieldset>
+					<legend><span class="number">1</span> Book Info</legend>
+					<input id="title" id="" type="text" name="title" placeholder="Title *">
+					<input id="author" type="text" name="author" placeholder="author *">
+					<input id="pages" type="text" name="pages" placeholder="pages *">
+					<input id="quantity" type="text" name="quantity" placeholder="quantity *">
+					<textarea name="description" placeholder="About Book"></textarea>
+					<label for="categories">Types of Books:</label>
+					<select id="categories" name="categories">
+					<optgroup label="Indoors">
+						<option value="fishkeeping"></option>
+						<option value="actionAndAdventure">Action and adventure</option>
+						<option value="anthology">Anthology</option>
+						<option value="business/economics">Business/economics</option>
+						<option value="crafts/hobbies">Crafts/hobbies</option>
+						<option value="sportsAndLeisure">Sports and leisure</option>
+						<option value="selfHelp">Self help</option>
+					    <option value="science">Science</option> 
+					    <option value="review">Review</option> 
+						<option value="textbook">Textbook</option>
+						<option value="religionEpiritualityAndNewAge">Religion, spirituality, and new age</option>
+						<option value="prayer">Prayer</option>
+						<option value="philosophy">Philosophy</option>
+						<option value="memoir">Memoir</option>
+					</optgroup>
+					<optgroup label="Outdoors">
+					  <option value="football">Football</option>
+					  <option value="swimming">Swimming</option>
+					  <option value="fishing">Fishing</option>
+					  <option value="climbing">Climbing</option>
+					  <option value="cycling">Cycling</option>
+					  <option value="other_outdoor">Other</option>
+					</optgroup>
+					</select>      
+					</fieldset>
+					<fieldset>
+					<legend><span class="number">2</span> Additional Info</legend>
+					<textarea  id="description" name="description" placeholder="About Your School"></textarea>
+					</fieldset>
+					<button class="va-button va-button__primary" id="createBook" type="button">
+						Apply	
+					</button>
+				</form>
+				</div>
+		</div>
+		<div class="va-card">
+			<a href="vanilla.html">Book</a>
+		</div>		
+	</div>
+	<script src="js/common.js"></script>
+	<script src="js/book.js"></script>
+</body>
+</html>

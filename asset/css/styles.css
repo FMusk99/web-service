@@ -1,0 +1,362 @@
+* {
+	box-sizing: border-box;
+}
+
+:root {  
+    --card-padding: 24px;
+    --card-height: 340px;
+    --card-skeleton: linear-gradient(rgb(211, 211, 211) var(--card-height), transparent 0);
+    
+    --avatar-size: 32px;
+    --avatar-position: var(--card-padding) var(--card-padding);
+    --avatar-skeleton: radial-gradient(circle 16px at center, white 99%, transparent 0);
+    
+    --title-height: 32px;
+    --title-width: 200px;
+    --title-position: var(--card-padding) 180px;
+    --title-skeleton: linear-gradient(white var(--title-height), transparent 0);
+    
+    --desc-line-height: 16px;
+    --desc-line-skeleton: linear-gradient(white var(--desc-line-height), transparent 0);
+    --desc-line-1-width:230px;
+    --desc-line-1-position: var(--card-padding) 242px;
+    --desc-line-2-width:180px;
+    --desc-line-2-position: var(--card-padding) 265px;
+    
+    --footer-height: 40px;
+    --footer-position: 0 calc(var(--card-height) - var(--footer-height));
+    --footer-skeleton: linear-gradient(white var(--footer-height), transparent 0);
+    
+    --blur-width: 200px;
+    --blur-size: var(--blur-width) calc(var(--card-height) - var(--footer-height));
+  }
+  
+
+.va-container {
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+.va-card {
+    display: block;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    padding: 1rem;
+}
+
+.va-search-box {
+	box-shadow: rgb(85 91 255) 0px 0px 0px 3px, rgb(31 193 27) 0px 0px 0px 6px, rgb(255 217 19) 0px 0px 0px 9px, rgb(255 156 85) 0px 0px 0px 12px, rgb(255 85 85) 0px 0px 0px 15px;
+    margin: 1rem;
+    padding: 1rem;
+	text-align: center;
+}
+.va-search-box__header {
+	color: #44a00e;
+    background: -webkit-linear-gradient(#ed8484, #1dc30b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+	font-size: 2.5rem;
+}
+
+
+/*to apply for all input*/
+input {
+	font-size: 18px;
+    padding: 0.5rem 0.5rem 0.5rem 0.2rem;
+    display: block;
+    width: 100%;
+	border-radius: 0.25rem;
+    border: 1px solid #009688;
+	color: #4e4e4e;
+}
+
+input:focus-visible {
+    outline-offset: 0px;
+	outline: 2px solid #acacac2e;
+}
+
+.va-button {
+    padding: 0.5rem 1rem;
+    font-size: .8rem;
+
+    /*apply for icon right position*/
+    display: inline-flex;
+    flex-flow: initial;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+}
+.va-button__primary {
+    background-color: #03a9f4;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+}
+
+
+
+
+/* utilities */
+.va-txt-center {
+	text-align: center;
+}
+
+
+/*result-box*/
+.result-box {
+    list-style-type: none;
+    padding-left: unset;
+    margin-top: 2rem;
+}
+
+.result-box__item {
+    margin-top: 0.5rem;
+}
+
+/*skeleton css*/
+.skeletion-animation {
+    background-image: url(/asset/images/paragraph.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    width: 100%;
+    height: 100px;
+    animation-name: rows;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+    height: 130px;
+}
+
+@keyframes rows {
+    0%   {background-color: #f7f7f78a;}
+    100% {    background-color: white;}
+}
+
+/*
+   * Card Skeleton for Loading
+*/
+
+.skeletion-card {
+    width: 280px;
+    height: var(--card-height); 
+
+    background-repeat: no-repeat;
+    background-image: radial-gradient(circle 16px, white 99%, transparent 0), linear-gradient(white 40px, transparent 0), linear-gradient(gray 100%, transparent 0);
+    background-size: 32px 32px, 200px 40px, 100% 100%;
+    background-position: 24px 24px, 24px 200px, 0 0;
+}
+
+.skeletion-card:empty::after {
+    content:"";
+    display:block;
+    width: 100%;
+    height: 100%;
+    border-radius:6px;
+    box-shadow: 0 10px 45px rgba(0,0,0, .1);
+
+    background-image:
+      linear-gradient(
+        90deg, 
+        rgba(#d3d3d3, 0) 0, 
+        rgba(#d3d3d3, .8) 50%, 
+        rgba(#d3d3d3, 0) 100%
+      ),linear-gradient(white var(--title-height), transparent 0),linear-gradient(white var(--desc-line-height), transparent 0),linear-gradient(white var(--desc-line-height), transparent 0),
+      radial-gradient(circle 16px at center, white 99%, transparent 0),
+      linear-gradient(white var(--footer-height), transparent 0),
+      linear-gradient(rgb(211, 211, 211) var(--card-height), transparent 0);
+
+    background-size:
+      var(--blur-size),
+      var(--title-width) var(--title-height),
+      var(--desc-line-1-width) var(--desc-line-height),
+      var(--desc-line-2-width) var(--desc-line-height),
+      var(--avatar-size) var(--avatar-size),
+      100% var(--footer-height),
+      100% 100%;
+    
+    background-position:24px 180px, 24px 242px, 24px 265px,24px 24px,0 calc(340px - 40px), 0 0;
+    background-repeat: no-repeat;
+    animation: loading 1.5s infinite;
+}
+   
+@keyframes loading {
+    to {
+      background-position:
+        350% 0,        
+        24px 180px,  
+        24px 242px,
+        24px 265px,
+        24px 24px,
+        0 calc(340px - 40px),
+        0 0
+      ;
+    }
+}
+
+@media screen and (min-width: 47em) {
+    :root {
+      --card-padding: 32px;
+      --card-height: 360px;
+    }
+}
+
+
+/*book */
+
+.form-style-5{
+	max-width: 500px;
+	padding: 10px 20px;
+	margin: 10px auto;
+	padding: 20px;
+	background: #f4f7f891;
+	border-radius: 8px;
+	font-family: Georgia, "Times New Roman", Times, serif;
+}
+.form-style-5 fieldset{
+	border: none;
+}
+.form-style-5 legend {
+	font-size: 1.4em;
+	margin-bottom: 10px;
+}
+.form-style-5 label {
+	display: block;
+	margin-bottom: 8px;
+}
+.form-style-5 input[type="text"],
+.form-style-5 input[type="date"],
+.form-style-5 input[type="datetime"],
+.form-style-5 input[type="email"],
+.form-style-5 input[type="number"],
+.form-style-5 input[type="search"],
+.form-style-5 input[type="time"],
+.form-style-5 input[type="url"],
+.form-style-5 textarea,
+.form-style-5 select {
+	font-family: Georgia, "Times New Roman", Times, serif;
+	background: rgba(255,255,255,.1);
+	border: none;
+	border-radius: 4px;
+	font-size: 15px;
+	margin: 0;
+	outline: 0;
+	padding: 10px;
+	width: 100%;
+	box-sizing: border-box; 
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box; 
+	background-color: #e8eeef;
+	color: #0a0a0a;
+	-webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	box-shadow: 0 1px 0 rgba(0,0,0,0.03) inset;
+	margin-bottom: 30px;
+}
+.form-style-5 input[type="text"]:focus,
+.form-style-5 input[type="date"]:focus,
+.form-style-5 input[type="datetime"]:focus,
+.form-style-5 input[type="email"]:focus,
+.form-style-5 input[type="number"]:focus,
+.form-style-5 input[type="search"]:focus,
+.form-style-5 input[type="time"]:focus,
+.form-style-5 input[type="url"]:focus,
+.form-style-5 textarea:focus,
+.form-style-5 select:focus{
+	background: #d2d9dd;
+}
+.form-style-5 select{
+	-webkit-appearance: menulist-button;
+	height:35px;
+}
+.form-style-5 .number {
+	background: #1abc9c;
+	color: #fff;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	font-size: 0.8em;
+	margin-right: 4px;
+	line-height: 30px;
+	text-align: center;
+	text-shadow: 0 1px 0 rgba(255,255,255,0.2);
+	border-radius: 15px 15px 15px 0px;
+}
+
+.form-style-5 input[type="submit"],
+.form-style-5 input[type="button"]
+{
+	position: relative;
+	display: block;
+	padding: 19px 39px 18px 39px;
+	color: #FFF;
+	margin: 0 auto;
+	background: #1abc9c;
+	font-size: 18px;
+	text-align: center;
+	font-style: normal;
+	width: 100%;
+	border: 1px solid #16a085;
+	border-width: 1px 1px 3px;
+	margin-bottom: 10px;
+}
+.form-style-5 input[type="submit"]:hover,
+.form-style-5 input[type="button"]:hover
+{
+	background: #109177;
+}
+/*book */
+
+
+
+/*start alert*/
+.alert {
+    padding: 1rem;
+    background-color: #f44336;
+    color: white;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    border-radius: 0.25rem;
+}
+
+.alert--error {
+    background-color: #f44336;
+}
+.alert--success {
+    background-color: green;
+}
+
+
+.alert strong {
+    background: linear-gradient(to right, #FFF 20%, #FF0 40%, #FF0 60%, #FFF 80%);
+    background-size: 200% auto;
+    color: #000;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 1s linear infinite;
+}
+  
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+  
+.closebtn:hover {
+    color: black;
+}
+
+@keyframes shine {
+    to {
+      background-position: 200% center;
+    }
+}
+
+/*end alert*/
