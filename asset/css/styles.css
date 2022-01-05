@@ -309,14 +309,88 @@ input:focus-visible {
 
 
 /*start alert*/
+.alert-container {
+    position: fixed;
+    right: 1rem;
+    top: 1rem;
+    border-radius: 0.25rem;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+}
 .alert {
     padding: 1rem;
     background-color: #f44336;
     color: white;
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
+    /* position: fixed; */
+    /* right: 1rem; */
+    /* top: 1rem; */
     border-radius: 0.25rem;
+   
+}
+.to-left-animation {
+    right: -20%;
+    animation: mymove 3s none;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+}
+
+.face-out-animation {
+    animation: mymove1 0.5s none;
+    animation-fill-mode: forwards;
+}
+
+.delay-forward-animation {
+    opacity: 1;
+    animation: delayforwardOpacity 3s none;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+   
+}
+.delay-reverse-animation {
+    opacity: 0.75;
+    animation: delayReverseOpacity 3s none;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+    
+}
+@keyframes delayforwardOpacity {
+    0%   {opacity: 1;}
+    50%   {opacity: 0.85;}
+    100% {opacity: 0.75;}
+}
+
+@keyframes delayReverseOpacity {
+    0%   {opacity: 0.75;}
+    50%   {opacity: 0.85;}
+    100% {opacity: 1;}
+}
+
+
+@keyframes mymove {
+    from {right: -20%;}
+    to {right: 1rem;}
+}
+
+
+@keyframes mymove1 {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.75;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.25;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
 }
 
 .alert--error {
@@ -340,7 +414,7 @@ input:focus-visible {
   
 .closebtn {
     margin-left: 15px;
-    color: white;
+    /* color: white; */
     font-weight: bold;
     float: right;
     font-size: 22px;
@@ -360,3 +434,43 @@ input:focus-visible {
 }
 
 /*end alert*/
+
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgb(0 0 0 / 13%);
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid rgb(206, 205, 205);
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* The Modal (background) */

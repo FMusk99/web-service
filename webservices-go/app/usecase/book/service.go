@@ -9,7 +9,7 @@ import (
 
 //Service book usecase
 type Service struct {
-	repo Repository
+	repo Repository // mock to sql
 }
 
 //NewService create new service

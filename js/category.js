@@ -1,4 +1,6 @@
 document.getElementById("generateCateData") ?.addEventListener("click", generateCategories);
+var jsonCreateCategory = document.getElementById("jsonCreateCategory")
+
 var xmlhtCate
 function generateCategories() {
 	createCategories(`${url}categories`)
@@ -83,3 +85,48 @@ function createCategories(url) {
 	xhr.send(JSON.stringify(categories));
 }
 
+
+
+function cloneCategoryRequest() {
+	/* Get the text field */
+	var copyText = {name: "Action and adventure", description: "Action and adventure"};
+	 /* Copy the text inside the text field */
+	navigator.clipboard.writeText(JSON.stringify(copyText));
+	popupMessage("Clone data successfully!")
+}
+
+jsonCreateCategory.onclick = function() {
+	createCategory(w3review ?.value)
+}
+
+function createCategory(json) {
+	if(!json){
+		// todo
+		// var raw = new Book()
+		// const formData = new FormData(document.getElementById('bookFrom'))
+		// for (var [key,value] of formData.entries()) {
+		// 	key === "pages" || key === "quantity" ?  raw[key] = parseInt(value) : raw[key] = value
+		// }
+		// console.log(raw)
+		// var json = JSON.stringify(raw);
+
+	}
+
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+	if (xhr.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+		if (xhr.status == 200) {
+			popupMessage('Success', COMMON_NOTI.SUCCESS, 4000)
+		} else if (xhr.status == 404) {
+			popupMessage("Bad request!",  COMMON_NOTI.ERROR)
+		} else {
+			popupMessage('error server!',  COMMON_NOTI.ERROR)
+			console.log(xhr)
+		}
+	}
+	};
+	  
+	xhr.open("POST", `${url}categories`);
+	xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send(json);
+}

@@ -11,10 +11,10 @@
   <meta property="og:title" content="A Basic HTML5 Template">
   <meta property="og:type" content="website">
   <meta property="og:description" content="A simple HTML5 Template for new projects.">
-  <meta property="og:image" content="image.png">
+  <!-- <meta property="og:image" content="image.png"> -->
   <link rel="stylesheet" href="asset/css/styles.css">
   <script src="js/defer-script.js"></script>
-
+  <link rel="import" href="list-json-modal.html" onload="handleLoad(event)" onerror="handleError(event)">
 </head>
 
 <body>
@@ -45,13 +45,58 @@
 				<button class="va-button va-button__primary" id="generateCateData" type="button">
 					Generate Category Data		
 				</button>
+				<button class="va-button va-button__primary" id="testBtn" type="button">
+					Test
+				</button>
 				<button class="va-button va-button__primary" id="fireBtn" type="button">
 					
 					<a href="book.html">Create Form</a>
 				</button>
 			</div>
 		</div>
+
+		<div  style="margin-top:1rem;">
+			<div class="va-card">
+				<h2>Put JSON into the textare element below!</h2>
+				<form>
+					<label for="w3review">Review of JSON:</label>
+					<textarea id="w3review" name="w3review" rows="15" style="width: 100%;" placeholder="Describe Json here({test: 'test'})..."></textarea>
+					<br><br>
+				</form>
+			</div>
+			<div class="va-card">
+				<button class="va-button va-button__primary" id="jsonCreateBook" type="button">
+					Create Book	
+				</button>
+				<button class="va-button va-button__primary" id="jsonCreateCategory" type="button">
+					Create Category
+				</button>
+				<button class="va-button va-button__primary" id="jsonTestBtnTxt" type="button">
+					Pretty json
+				</button>
+				<button class="va-button va-button__primary" id="jsonList" type="button">
+					view List JSON
+				</button>
+			</div>
+		</div>
 		
+		<template>
+			<div class="modal-content">
+				<span class="close">&times;</span>
+				<button class="va-button va-button__primary" id="jsonClonBook" type="button">
+					Copy Book sample
+				</button>
+				<button class="va-button va-button__primary" id="jsonClonCategory" type="button">
+					Copy Category sample
+				</button>
+				<button class="va-button va-button__primary" id="jsonTodo2" type="button">
+					to do
+				</button>
+				<button class="va-button va-button__primary" id="jsonTodo3" type="button">
+					to do
+				</button>
+				</div>
+		</template>
 	</div>
 	<!--<h1 id="header-title" class="header-title">Some text here</h1>-->
 	<!-- your content here... -->
@@ -62,5 +107,6 @@
 	<script src="js/app.js"></script>
 	<script src="js/vanilla.js"></script>
 	<script src="js/category.js"></script>
+	<script src="js/modal-box.js"></script>
 </body>
 </html>

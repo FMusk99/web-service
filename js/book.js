@@ -1,7 +1,14 @@
 document.getElementById("searchBooks") ?.addEventListener("click", findByKeyword);
 document.getElementById("generateBookData") ?.addEventListener("click", generateBooks);
 document.getElementById("createBook") ?.addEventListener("click", createBook);
+var jsonCreateBook = document.getElementById("jsonCreateBook") // Create book by json data in textarea element.
+jsonCreateBook.onclick = function() {
+	createBook(w3review ?.value)
+}
 
+function testFunc() {
+	popupMessage("TEST", COMMON_NOTI.SUCCESS)
+}
 var keyword = document.getElementById("textIn")
 var xmlht
 var url = "http://127.0.0.1:8080/v1/"
@@ -64,13 +71,23 @@ function getBooks(value) {
 				if (res.code === 200) {
 					for (let book of res.data) {
 						let obj  = convertBook(book)
-						console.log(obj)
 						let li = document.createElement("li");
 						li.classList.add("result-box__item")
 						li.classList.add("va-card")
 						li.appendChild(document.createTextNode(`${obj ?.title} - ${obj ?.author}`));
+						var closeTag = document.createElement("SPAN")
+						closeTag.innerHTML = "&times"
+						closeTag.classList.add("closebtn")
+						closeTag.onclick = function() {
+							deleteBook(book.id)
+						}
+						li.appendChild(closeTag)
 						ul.appendChild(li);
 					}
+				} else if (res ?.code === 404){
+					let li = document.createElement("li");
+					li.appendChild(document.createTextNode(`Not have data!`));
+					ul.appendChild(li);
 				}
 				
 			} else if(res ?.code === 404) {
@@ -121,9 +138,9 @@ function createBooks(url) {
 			if (xmlht.status == 200) {
 				popupMessage("created Books",COMMON_NOTI.SUCCESS)
 			} else if (xmlht.status == 404) {
-				let li = document.createElement("li");
-				li.appendChild(document.createTextNode(`Not have data!`));
-				ul.appendChild(li);
+				// let li = document.createElement("li");
+				// li.appendChild(document.createTextNode(`Not have data!`));
+				// ul.appendChild(li);
 			} else {
 				console.log(xmlht)
 				// alert('something else other than 200 was returned');
@@ -135,14 +152,16 @@ function createBooks(url) {
 	xmlht.send(formData);
 }
 
-function createBook() {
-	var raw = new Book()
-	const formData = new FormData(document.getElementById('bookFrom'))
-	for (var [key,value] of formData.entries()) {
-		key === "pages" || key === "quantity" ?  raw[key] = parseInt(value) : raw[key] = value
+function createBook(json) {
+	if(!json){
+		var raw = new Book()
+		const formData = new FormData(document.getElementById('bookFrom'))
+		for (var [key,value] of formData.entries()) {
+			key === "pages" || key === "quantity" ?  raw[key] = parseInt(value) : raw[key] = value
+		}
+		console.log(raw)
+		var json = JSON.stringify(raw);
 	}
-	console.log(raw)
-	var json = JSON.stringify(raw);
 
 	var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
@@ -181,3 +200,37 @@ class Book {
 		this.updated_at = updated_at
 	}
 }
+
+function cloneBookRequest() {
+	/* Get the text field */
+	var copyText = {title: "Clean code", author:"Robert C.Martin", pages :200, quantity: 1000};
+  
+	/* Select the text field */
+	// copyText.select();
+	// copyText.setSelectionRange(0, 99999); /* For mobile devices */
+  
+	 /* Copy the text inside the text field */
+	navigator.clipboard.writeText(JSON.stringify(copyText));
+	popupMessage("Clone data successfully!")
+}
+
+function deleteBook(id){
+	console.log("delete: ", id)
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function () {
+	if (xhr.readyState == XMLHttpRequest.DONE) { // XMLHttpRequest.DONE == 4
+		if (xhr.status == 200) {
+			popupMessage('Success', COMMON_NOTI.SUCCESS, 4000)
+		} else if (xhr.status == 404) {
+			popupMessage("Bad request!",  COMMON_NOTI.ERROR)
+		} else {
+			popupMessage('error server!',  COMMON_NOTI.ERROR)
+			console.log(xhr)
+		}
+	}
+	};
+	  
+	xhr.open("DELETE", `${url}books/${id}`);
+	// xhr.setRequestHeader("Content-Type", "application/json");
+	xhr.send();
+}	

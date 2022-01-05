@@ -22,6 +22,8 @@ func NewArticleHttpHandler(repo Repository) *BookHanlder {
 
 func (hanlder *BookHanlder) HandleFunc() {
 	http.HandleFunc("/v1/books", hanlder.Books) // update this line of code.
+	// http.HandleFunc("/v1/books/{id}", hanlder.DeleteBook)
+
 	// if err := http.ListenAndServe(":8080", nil); err != nil {
 	// 	log.Fatal(err)
 	// }
@@ -29,13 +31,17 @@ func (hanlder *BookHanlder) HandleFunc() {
 }
 
 func (hanlder *BookHanlder) Books(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Method: ", r.Method, r)
 	switch r.Method {
 	case "GET":
 		hanlder.SearchBooks(w, r)
 	case "POST":
 		hanlder.CreateBooks(w, r)
+	case "DELETE":
+		hanlder.DeleteBook(w, r)
 	default:
-		w.Header().Set("Content-Type", "application/json")
+		fmt.Print(r.Method)
+		// w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
 		w.WriteHeader(http.StatusOK)
@@ -48,6 +54,7 @@ func (hanlder *BookHanlder) GetBook(id entity.ID) (*entity.Book, error) {
 }
 
 func (hanlder *BookHanlder) SearchBooks(w http.ResponseWriter, r *http.Request) {
+	// fmt.Println("Search")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Encoding", "gzip")
@@ -80,17 +87,18 @@ func (hanlder *BookHanlder) UpdateBook(e *entity.Book) error {
 	return nil
 }
 
-func (hanlder *BookHanlder) DeleteBook(id entity.ID) error {
-	return nil
+func (hanlder *BookHanlder) DeleteBook(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	keys := r.URL.Query() // get keyword param
+	fmt.Print("keys: ", keys)
+	js, _ := json.Marshal("")
+	w.Write(js)
 }
 
 func (hanlder *BookHanlder) CreateBooks(w http.ResponseWriter, r *http.Request) {
-
-	fmt.Println(r.Header["Content-Type"])
 	if commonHTTP.HasContentType(r, "application/json") {
 		var book RBook
 		err := json.NewDecoder(r.Body).Decode(&book)
-		fmt.Println(err)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

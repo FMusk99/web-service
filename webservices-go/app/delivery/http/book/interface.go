@@ -32,5 +32,5 @@ type IbookHandler interface {
 	CreateBook(title string, author string, pages int, quantity int) (entity.ID, error)
 	CreateBooks() (string, error)
 	UpdateBook(e *entity.Book) error
-	DeleteBook(id entity.ID) error
+	DeleteBook(w http.ResponseWriter, r *http.Request)
 }
