@@ -28,8 +28,8 @@ import (
 
 	"webserver/app/config"
 	"webserver/app/entity"
-	"webserver/app/infrastructure/repository"
-	"webserver/app/usecase/book"
+	_postgresRepo "webserver/app/infrastructure/repository/postgres"
+	_bookUsecase "webserver/app/usecase/book"
 	pb "webserver/grpc"
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
@@ -50,7 +50,7 @@ type Reader interface {
 type Writer interface {
 	CreateBook(title string, author string, pages int, quantity int) (entity.ID, error)
 	UpdateBook(e *entity.Book) error
-	DeleteBook(id entity.ID) error
+	DeleteBook(id string) error
 }
 
 //Repository interface
@@ -117,8 +117,8 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	// defer db.Close()
-	repo := repository.NewBookSQL(db)
-	bookService := book.NewService(repo)
+	repo := _postgresRepo.NewBookSQL(db)
+	bookService := _bookUsecase.NewService(repo)
 	pb.RegisterBookServer(s, Newserver(bookService))
 	log.Printf("server listening at %v", lis.Addr())
 	if err := s.Serve(lis); err != nil {

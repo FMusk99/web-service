@@ -15,3 +15,7 @@ func StringToID(s string) (ID, error) {
 	id, err := uuid.Parse(s)
 	return ID(id), err
 }
+
+func IDToString(id uuid.UUID) (string, error) {
+	return id.String(), nil
+}

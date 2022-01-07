@@ -1,4 +1,4 @@
-package repository
+package postgres
 
 import (
 	"database/sql"
@@ -63,7 +63,6 @@ func (r *CategorySQL) Search(query string) ([]*entity.Category, error) {
 	rows, err := r.db.Query(sql_statement)
 	var categories []*entity.Category
 	if err != nil {
-		fmt.Print("Query error")
 		panic(err)
 	}
 	// defer rows.Close()

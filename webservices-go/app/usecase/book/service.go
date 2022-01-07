@@ -67,17 +67,25 @@ func (s *Service) ListBooks() ([]*entity.Book, error) {
 }
 
 //DeleteBook Delete a book
-func (s *Service) DeleteBook(id entity.ID) error {
-	_, err := s.GetBook(id)
+func (s *Service) DeleteBook(id string) error {
+	Id, err := entity.StringToID(id)
 	if err != nil {
 		return err
 	}
-	return s.repo.Delete(id)
+	_, err = s.GetBook(Id)
+	if err != nil {
+		return err
+	}
+	return s.repo.Delete(Id)
 }
 
 //UpdateBook Update a book
 func (s *Service) UpdateBook(e *entity.Book) error {
 	err := e.Validate()
+	if err != nil {
+		return err
+	}
+	_, err = s.GetBook(e.ID)
 	if err != nil {
 		return err
 	}

@@ -1,4 +1,4 @@
-package repository
+package postgres
 
 import (
 	"database/sql"
@@ -32,25 +32,22 @@ func (r *BookSQL) Create(e *entity.Book) (entity.ID, error) {
 
 //Get a book
 func (r *BookSQL) Get(id entity.ID) (*entity.Book, error) {
-	stmt, err := r.db.Prepare(`select id, title, author, pages, quantity, created_at from book where id = ?`)
+	var idn string
+	var title string
+	var author string
+	var pages int32
+	var quantity int32
+	err := r.db.QueryRow("SELECT id, title, author, pages, quantity FROM book WHERE id = $1", id).Scan(&idn, &title, &author, &pages, &quantity)
 	if err != nil {
 		return nil, err
 	}
-	var b entity.Book
-	rows, err := stmt.Query(id)
-	if err != nil {
-		return nil, err
-	}
-	for rows.Next() {
-		err = rows.Scan(&b.ID, &b.Title, &b.Author, &b.Pages, &b.Quantity, &b.CreatedAt)
-	}
-	return &b, nil
+	return &entity.Book{ID: id, Title: title, Pages: int(pages), Quantity: int(quantity)}, nil
 }
 
 //Update a book
 func (r *BookSQL) Update(e *entity.Book) error {
 	e.UpdatedAt = time.Now()
-	_, err := r.db.Exec("update book set title = ?, author = ?, pages = ?, quantity = ?, updated_at = ? where id = ?", e.Title, e.Author, e.Pages, e.Quantity, e.UpdatedAt.Format("2006-01-02"), e.ID)
+	_, err := r.db.Exec("UPDATE book set title = $1, author = $2, pages = $3, quantity = $4, updated_at = $5 where id = $6", e.Title, e.Author, e.Pages, e.Quantity, e.UpdatedAt, e.ID)
 	if err != nil {
 		return err
 	}
@@ -63,10 +60,8 @@ func (r *BookSQL) Search(query string) ([]*entity.Book, error) {
 	rows, err := r.db.Query(sql_statement)
 	var book []*entity.Book
 	if err != nil {
-		fmt.Print("Query error")
 		panic(err)
 	}
-	// defer rows.Close()
 	var id entity.ID
 	var title string
 	var author string
@@ -113,7 +108,7 @@ func (r *BookSQL) List() ([]*entity.Book, error) {
 
 //Delete a book
 func (r *BookSQL) Delete(id entity.ID) error {
-	_, err := r.db.Exec("delete from book where id = ?", id)
+	_, err := r.db.Exec("DELETE FROM book WHERE id = $1", id)
 	if err != nil {
 		return err
 	}

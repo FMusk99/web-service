@@ -1,10 +1,10 @@
-package httpHandler
+package http
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	commonHTTP "webserver/app/delivery/http"
+	_helperHTTP "webserver/app/delivery/http"
 	"webserver/app/entity"
 )
 
@@ -87,7 +87,7 @@ func (hanlder *CategoryHanlder) DeleteBook(id entity.ID) error {
 
 func (hanlder *CategoryHanlder) CreateCategories(w http.ResponseWriter, r *http.Request) {
 
-	if commonHTTP.HasContentType(r, "application/json") {
+	if _helperHTTP.HasContentType(r, "application/json") {
 		var category RDescription
 		err := json.NewDecoder(r.Body).Decode(&category)
 		if err != nil {

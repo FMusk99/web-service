@@ -1,4 +1,4 @@
-package httpHandler
+package http
 
 import (
 	"net/http"
@@ -15,7 +15,7 @@ type Reader interface {
 type Writer interface {
 	CreateBook(title string, author string, pages int, quantity int) (entity.ID, error)
 	UpdateBook(e *entity.Book) error
-	DeleteBook(id entity.ID) error
+	DeleteBook(id string) error
 }
 
 //Repository interface

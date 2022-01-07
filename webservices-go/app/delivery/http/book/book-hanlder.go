@@ -1,4 +1,4 @@
-package httpHandler
+package http
 
 import (
 	"bytes"
@@ -6,7 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	commonHTTP "webserver/app/delivery/http"
+	"regexp"
+	_helperHTTP "webserver/app/delivery/http"
 	"webserver/app/entity"
 )
 
@@ -21,17 +22,12 @@ func NewArticleHttpHandler(repo Repository) *BookHanlder {
 }
 
 func (hanlder *BookHanlder) HandleFunc() {
-	http.HandleFunc("/v1/books", hanlder.Books) // update this line of code.
-	// http.HandleFunc("/v1/books/{id}", hanlder.DeleteBook)
-
-	// if err := http.ListenAndServe(":8080", nil); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// fmt.Printf("Starting server at port 8080\n")
+	http.HandleFunc("/", hanlder.Books) // update this line of code.
 }
 
 func (hanlder *BookHanlder) Books(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Method: ", r.Method, r)
+	// fmt.Println(r)
+	fmt.Println(r.Method)
 	switch r.Method {
 	case "GET":
 		hanlder.SearchBooks(w, r)
@@ -39,11 +35,18 @@ func (hanlder *BookHanlder) Books(w http.ResponseWriter, r *http.Request) {
 		hanlder.CreateBooks(w, r)
 	case "DELETE":
 		hanlder.DeleteBook(w, r)
+	case "PATCH":
+		// hanlder.UpdateBook(w, r)
+		w.Write([]byte("404 page not found."))
+		return
+	case "PUT":
+		hanlder.UpdateBook(w, r)
 	default:
-		fmt.Print(r.Method)
-		// w.Header().Set("Content-Type", "application/json")
+
+		w.Header().Set("Content-Type", "*")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 		w.WriteHeader(http.StatusOK)
 		return
 	}
@@ -54,7 +57,6 @@ func (hanlder *BookHanlder) GetBook(id entity.ID) (*entity.Book, error) {
 }
 
 func (hanlder *BookHanlder) SearchBooks(w http.ResponseWriter, r *http.Request) {
-	// fmt.Println("Search")
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Encoding", "gzip")
@@ -83,20 +85,58 @@ func (hanlder *BookHanlder) ListBooks() ([]*entity.Book, error) {
 	return books, nil
 }
 
-func (hanlder *BookHanlder) UpdateBook(e *entity.Book) error {
-	return nil
+func (hanlder *BookHanlder) UpdateBook(w http.ResponseWriter, r *http.Request) {
+	if _helperHTTP.HasContentType(r, "application/json") {
+		var book entity.Book
+		err := json.NewDecoder(r.Body).Decode(&book)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+		path := r.URL.Path // get id
+		re := regexp.MustCompile(`/v1/books/`)
+		id := re.ReplaceAll([]byte(path), []byte(""))
+		uuid := string(id[:])
+		ID, err := entity.StringToID(uuid)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		book.ID = ID
+		err = hanlder.book.UpdateBook(&book)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	js, err := json.Marshal(RResponse{Code: 200, Data: make([]*entity.Book, 0)})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Write(js)
 }
 
 func (hanlder *BookHanlder) DeleteBook(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	keys := r.URL.Query() // get keyword param
-	fmt.Print("keys: ", keys)
-	js, _ := json.Marshal("")
-	w.Write(js)
+	path := r.URL.Path // get keyword param
+	re := regexp.MustCompile(`/v1/books/`)
+	id := re.ReplaceAll([]byte(path), []byte(""))
+	uuid := string(id[:])
+	err := hanlder.book.DeleteBook(uuid)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Write([]byte("deleted successful."))
 }
 
 func (hanlder *BookHanlder) CreateBooks(w http.ResponseWriter, r *http.Request) {
-	if commonHTTP.HasContentType(r, "application/json") {
+	if _helperHTTP.HasContentType(r, "application/json") {
 		var book RBook
 		err := json.NewDecoder(r.Body).Decode(&book)
 		if err != nil {
